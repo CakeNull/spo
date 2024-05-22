@@ -89,18 +89,20 @@
       }
 
       function keyDownHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
+        if (e.key === "Right" || e.key === "ArrowRight" || e.key.toLowerCase() == "d") {
           rightPressed = true;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key.toLowerCase() == "a") {
           leftPressed = true;
         }
       }
 
       function keyUpHandler(e) {
-        if (e.key === "Right" || e.key === "ArrowRight") {
+        if (e.key === "Right" || e.key === "ArrowRight" || e.key.toLowerCase() == "d") {
           rightPressed = false;
-        } else if (e.key === "Left" || e.key === "ArrowLeft") {
+        } else if (e.key === "Left" || e.key === "ArrowLeft" || e.key.toLowerCase() == "a") {
           leftPressed = false;
+        } else {
+          console.log(e.key);
         }
       }
 
