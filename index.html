@@ -39,6 +39,8 @@
       let dx = 2;
       let dy = -2;
 
+      let score = 0;
+
       const brickRowCount = 3;
       const brickColumnCount = 5;
       const brickWidth = 75;
@@ -96,6 +98,7 @@
         drawPaddle();
         collisionDetection();
         drawBricks();
+        drawScore();
 
         x += dx;
         y += dy;
@@ -108,7 +111,7 @@
           if (x > paddleX && x < paddleX + paddleWidth) {
             dy = -dy;
           } else {
-            alert("GAME OVER");
+            alert("    N  O  T    S  P  O    ");
             document.location.reload();
             clearInterval(interval); // Needed for Chrome to end game
           }
@@ -155,12 +158,24 @@
               ) {
                 dy = -dy;
                 b.status = 0;
+                score++;
+                if (score === brickRowCount * brickColumnCount) {
+                  alert("    S  P  O    ");
+                  document.location.reload();
+                  clearInterval(interval); // Needed for Chrome to end game
+                }
               }
             }
           }
         }
       }
 
+
+      function drawScore() {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText(`Score: ${score}`, 8, 20);
+      }
 
       const interval = setInterval(draw, 10);
       document.addEventListener("keydown", keyDownHandler, false);
