@@ -165,6 +165,22 @@ function mouseMoveHandler(e) {
   }
 }
 
+function leftButtonDownHandler(event) {
+    leftPressed = true;
+}
+
+function leftButtonUpHandler(event) {
+    leftPressed = false;
+}
+
+function rightButtonDownHandler(event) {
+    rightPressed = true;
+}
+
+function rightButtonUpHandler(event) {
+    rightPressed = false;
+}
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
@@ -185,5 +201,9 @@ export {
     start,
     keyDownHandler,
     keyUpHandler,
-    mouseMoveHandler
+    mouseMoveHandler,
+    leftButtonDownHandler,
+    leftButtonUpHandler,
+    rightButtonDownHandler,
+    rightButtonUpHandler
 }

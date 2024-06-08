@@ -5,11 +5,27 @@
 canvas {
     background: #eee;
     display: block;
-    margin: 0 auto;
 }
 body {
     display: flex;
     align-items: center;
     justify-content: center;
+    align-content: center;
     height: 100%
+}
+button {
+    display: block;
+    font-size: 2em;
+    margin: 1em;
+    padding: 1em;
+    color: #0095DD;
+}
+#start {
+    margin: 1em auto;
+}
+#left {
+    float: left;
+}
+#right {
+    float: right;
 }
