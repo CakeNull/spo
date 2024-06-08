@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+  <head>
+    <meta charset="utf-8">
+    <title> S P O </title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <canvas id="Canvas" width="480" height="320"></canvas>
+    <script type="module">
+      import * as Game from './main.mjs';
+
+      const canvas = document.getElementById("Canvas");
+
+      Game.start(canvas);
+
+      document.addEventListener("keydown", Game.keyDownHandler, false);
+      document.addEventListener("keyup", Game.keyUpHandler, false);
+      document.addEventListener("mousemove", Game.mouseMoveHandler, false);
+    </script>
+  </body>
+</html>

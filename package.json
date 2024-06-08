@@ -1,0 +1,23 @@
+{
+  "name": "spo",
+  "version": "1.0.0",
+  "description": "S P O",
+  "homepage": "https://spo.cakenull.com",
+  "main": "src/index.html",
+  "scripts": {
+    "build": "",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b gh-pages -d src",
+    "test": "mocha",
+    "start": "http-server src -o"
+  },
+  "author": "Cake Null",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^10.4.0"
+  },
+  "dependencies": {
+    "gh-pages": "^6.1.1",
+    "http-server": "^14.1.1"
+  }
+}
