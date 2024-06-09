@@ -167,18 +167,22 @@ function mouseMoveHandler(e) {
 
 function leftButtonDownHandler(event) {
     leftPressed = true;
+    event.preventDefault();
 }
 
 function leftButtonUpHandler(event) {
     leftPressed = false;
+    event.preventDefault();
 }
 
 function rightButtonDownHandler(event) {
     rightPressed = true;
+    event.preventDefault();
 }
 
 function rightButtonUpHandler(event) {
     rightPressed = false;
+    event.preventDefault();
 }
 
 function getRandomInt(max) {
