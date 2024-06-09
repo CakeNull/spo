@@ -23,11 +23,15 @@
 
         const right = document.getElementById('right');
         right.addEventListener("mousedown", Game.rightButtonDownHandler, false);
+        right.addEventListener("touchstart", Game.rightButtonDownHandler, false);
         right.addEventListener("mouseup", Game.rightButtonUpHandler, false);
+        right.addEventListener("touchend", Game.rightButtonUpHandler, false);
 
         const left = document.getElementById('left');
         left.addEventListener("mousedown", Game.leftButtonDownHandler, false);
+        left.addEventListener("touchstart", Game.leftButtonDownHandler, false);
         left.addEventListener("mouseup", Game.leftButtonUpHandler, false);
+        left.addEventListener("touchend", Game.leftButtonUpHandler, false);
 
         document.addEventListener("keydown", Game.keyDownHandler, false);
         document.addEventListener("keyup", Game.keyUpHandler, false);
