@@ -84,6 +84,7 @@ function tick() {
     } else {
       alert("    N  O  T    S  P  O    ");
       document.location.reload();
+      return false;
     }
   }
 
@@ -94,6 +95,8 @@ function tick() {
     paddleX -= 7;
     paddleX = Math.max(paddleX - 7, 0);
   }
+
+  return true;
 }
 
 function draw() {
@@ -105,9 +108,9 @@ function draw() {
   drawBricks();
   drawScore();
 
-  tick();
-
-  requestAnimationFrame(draw);
+  if (tick()) {
+    requestAnimationFrame(draw);
+  }
 }
 
 function keyDownHandler(e) {

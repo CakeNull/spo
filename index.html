@@ -17,6 +17,8 @@
       import * as Game from './main.mjs';
 
       document.getElementById('start').addEventListener("click", (event) => {
+        event.preventDefault();
+
         const canvas = document.getElementById("Canvas");
 
         Game.start(canvas);
