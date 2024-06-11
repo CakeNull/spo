@@ -62,9 +62,6 @@ function keyUpHandler(e) {
   }
 }
 
-function collisionDetection(state) {
-}
-
 function drawScore(state) {
   ctx.font = "16px Arial";
   ctx.fillStyle = "#0095DD";
@@ -104,7 +101,7 @@ function getRandomInt(max) {
 
 function counter(state, action) {
 
-  console.log({action, state});
+  // console.log({action, state});
 
   switch (action.type) {
     case 'TICK':
@@ -180,6 +177,7 @@ function tickAction(state) {
             document.location.reload();
           }
           store.dispatch({ type: 'SCORE' });
+          return;
         }
       }
     }
