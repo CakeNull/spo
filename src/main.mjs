@@ -100,7 +100,6 @@ function getRandomInt(max) {
 }
 
 function counter(state, action) {
-
   // console.log({action, state});
 
   switch (action.type) {
@@ -153,23 +152,43 @@ function counter(state, action) {
   }
 }
 
+function rectangleAndCircleIntersects(circleX, circleY, circleRadius, rectangleX, rectangleY, rectangeWidth, rectangleHeight) {
+  const circleDistanceX = Math.abs(circleX - rectangleX);
+  const circleDistanceY = Math.abs(circleY - rectangleY);
 
-function tickAction(state) {
+  if (circleDistanceX > (rectangeWidth / 2 + circleRadius)) return false;
+  if (circleDistanceY > (rectangleHeight / 2 + circleRadius)) return false;
+
+  if (circleDistanceX <= (rectangeWidth/2)) {
+    store.dispatch({ type: 'VERTICAL_BOUNCE' });
+    return true;
+  }
+  if (circleDistanceY <= (rectangleHeight/2)){
+    store.dispatch({ type: 'HORIZONTAL_BOUNCE' });
+    return true;
+  }
+
+  const cornerDistanceSquared = (circleDistanceX - rectangeWidth/2)**2 +
+                                (circleDistanceY - rectangleHeight/2)**2;
+
+  if (cornerDistanceSquared <= circleRadius**2) {
+    // console.log('DIAGONAL');
+    store.dispatch({ type: 'VERTICAL_BOUNCE' });
+    return true;
+  }
+
+  return false;
+}
+
+function brickCollision(state) {
   for (let c = 0; c < state.bricks.length; c++) {
     for (let r = 0; r < state.bricks[c].length; r++) {
       const brick = state.bricks[c][r];
       if (brick.active) {
-        if (
-          state.ballX + state.ballRadius > brick.x &&
-          state.ballX - state.ballRadius < brick.x + brickWidth &&
-          state.ballY + state.ballRadius > brick.y &&
-          state.ballY - state.ballRadius < brick.y + brickHeight
-        ) {
-          if (state.ballX < brick.x || state.ballX > brick.x + brickWidth) {
-            store.dispatch({ type: 'HORIZONTAL_BOUNCE' });
-          } else {
-            store.dispatch({ type: 'VERTICAL_BOUNCE' });
-          }
+        if (rectangleAndCircleIntersects(
+          state.ballX, state.ballY, state.ballRadius,
+          brick.x+brickWidth/2, brick.y+brickHeight/2, brickWidth, brickHeight
+        )) {
           brick.active = false;
           if (state.score+1 === brickRowCount * brickColumnCount) {
             store.dispatch({ type: 'FINISH' });
@@ -182,30 +201,53 @@ function tickAction(state) {
       }
     }
   }
+}
 
-  if (0 + state.ballRadius > state.ballX || state.ballX > canvas.width - state.ballRadius) {
+function paddleAndCircleIntersects(circleX, circleY, circleRadius, rectangleX, rectangleY, rectangeWidth, rectangleHeight, dy) {
+  const circleDistanceX = Math.abs(circleX - rectangleX);
+  const circleDistanceY = Math.abs(circleY - rectangleY);
+
+  if (circleDistanceX > (rectangeWidth / 2 + circleRadius)) return false;
+  if (circleDistanceY > (rectangleHeight / 2 + circleRadius)) return false;
+
+  if (circleDistanceX <= (rectangeWidth/2) && dy > 0) {
+    store.dispatch({ type: 'VERTICAL_BOUNCE' });
+    return true;
+  }
+  if (circleDistanceY <= (rectangleHeight/2)){
+    store.dispatch({ type: 'HORIZONTAL_BOUNCE' });
+    return true;
+  }
+
+  const cornerDistanceSquared = (circleDistanceX - rectangeWidth/2)**2 +
+                                (circleDistanceY - rectangleHeight/2)**2;
+
+  if (cornerDistanceSquared <= circleRadius**2 && dy > 0) {
+    // console.log('DIAGONAL');
+    store.dispatch({ type: 'VERTICAL_BOUNCE' });
+    return true;
+  }
+
+  return false;
+}
+
+function borderCollision(state) {
+  if (0 + state.ballRadius >= state.ballX || state.ballX >= canvas.width - state.ballRadius) {
     store.dispatch({ type: 'HORIZONTAL_BOUNCE' });
   }
 
-  if (state.ballY < state.ballRadius) {
+  if (state.ballY <= state.ballRadius) {
     store.dispatch({ type: 'VERTICAL_BOUNCE' });
   } else if (state.ballY + state.ballRadius > canvas.height - state.paddleHeight) {
-    if (state.ballX > state.paddleX &&
-        state.ballX < state.paddleX + state.paddleWidth) {
-      store.dispatch({ type: 'VERTICAL_BOUNCE' });
-    } else if (state.ballY + state.ballRadius > canvas.height) {
+    if (paddleAndCircleIntersects(
+      state.ballX, state.ballY, state.ballRadius,
+      state.paddleX+state.paddleWidth/2, (canvas.height - state.paddleHeight) + state.paddleHeight/2, state.paddleWidth, state.paddleHeight, state.dy
+    )) {
+    } else if (state.ballY + state.ballRadius >= canvas.height) {
       alert("    N  O  T    S  P  O    ");
       document.location.reload();
     }
   }
-
-  if (state.rightPressed) {
-    store.dispatch({ type: 'PADDLE', payload: Math.min(state.paddleX + 14, canvas.width - state.paddleWidth) });
-  } else if (state.leftPressed) {
-    store.dispatch({ type: 'PADDLE', payload: Math.max(state.paddleX - 14, 0) });
-  }
-
-  store.dispatch({ type: 'TICK' });
 }
 
 function draw() {
@@ -218,10 +260,14 @@ function draw() {
   drawBricks(state);
   drawScore(state);
 
-  tickAction(state);
+  brickCollision(state);
+  borderCollision(state);
+
+  store.dispatch({ type: 'TICK' });
 
   if (store.getState().active) {
     requestAnimationFrame(draw);
+    // setTimeout(draw, 60);
   }
 }
 
